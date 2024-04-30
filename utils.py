@@ -24,8 +24,10 @@ def separate_video(video_path):
 
 
 def join_video(images, out_path, fps=15):
+    # 对于每个图像，将其转换为RGB格式
+    rgb_images = [cv2.cvtColor(img, cv2.COLOR_BGR2RGB) for img in images]
     # 创建视频剪辑
-    clip = ImageSequenceClip(images, fps=fps)
+    clip = ImageSequenceClip(rgb_images, fps=fps)
     # 写出为视频文件
     clip.write_videofile(out_path, codec='libx264')
 
@@ -46,7 +48,7 @@ def apply_translucent_mask(image, mask, color=None, alpha=0.3):
 
     # 创建一个与输入图像同样大小的红色图层
     to_mask = np.zeros_like(image)
-    to_mask[mask] = color  # 红色
+    to_mask[mask] = color
 
     # 将红色遮罩层叠加到原始图像上
     # cv2.addWeighted用于按指定的权重合并两个图像
@@ -96,12 +98,15 @@ def process_masks(folder_a, folder_b, folder_c, color=None, alpha=0.3):
 
 if __name__ == '__main__':
     # 使用示例
-    process_masks('data/0004/0004_img/', 'data/0004_prediction/', 'data/0004_masked_prediction/', color=[255, 0, 0], alpha=0.3)
-    process_masks('data/0004/0004_img/', 'data/0004_gt/', 'data/0004_masked_gt/', color=[255, 0, 0], alpha=0.3)
+    process_masks('data/0004/0004_img/', 'data/0004_prediction/', 'data/0004_masked_prediction/')
+    process_masks('data/0004/0004_img/', 'data/0004_gt/', 'data/0004_masked_gt/')
+    # process_masks('data/0004/0004_img/', 'data/0004_gt/', 'data/0004_masked_gt/', color=[255, 0, 0], alpha=0.3)  #
+    # # gt用蓝色标记
 
-    folder_paths = ["./data/0004/0004_img/", "./data/0004_gt/", "./data/0004_prediction/", "./data/0004_masked_gt/", "./data/0004_masked_prediction/"]
-    out_paths = ["./data/0004/0004.mp4", "./data/0004_gt/0004_gt.mp4", "./data/0004_prediction/0004_prediction.mp4", "./data/0004_masked_gt/0004_masked_gt.mp4", "./data/0004_masked_prediction/0004_masked_prediction.mp4"]
-
+    folder_paths = ["./data/0004/0004_img/", "./data/0004_gt/", "./data/0004_prediction/", "./data/0004_masked_gt/",
+                    "./data/0004_masked_prediction/"]
+    out_paths = ["./data/0004/0004.mp4", "./data/0004_gt/0004_gt.mp4", "./data/0004_prediction/0004_prediction.mp4",
+                 "./data/0004_masked_gt/0004_masked_gt.mp4", "./data/0004_masked_prediction/0004_masked_prediction.mp4"]
 
     for folder_path, out_path in zip(folder_paths, out_paths):
         image_files = [img for img in os.listdir(folder_path) if img.endswith((".png", ".jpg", ".jpeg"))]

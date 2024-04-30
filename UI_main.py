@@ -38,37 +38,10 @@ def process_video(video_path):
     gt_path = find_file(video_path, 'data/0004_gt/')
     masked_pred_path = find_file(video_path, 'data/0004_masked_prediction/')
     masked_gt_path = find_file(video_path, 'data/0004_masked_gt')
-    time.sleep(6 + random.random()*2)  # 模拟模型处理时间
+    time.sleep(8 + random.random()*2)  # 模拟模型处理时间
     return pred_path, gt_path, masked_pred_path, masked_gt_path
 
 
-# # JavaScript for syncing video play and pause
-# js = """
-# document.addEventListener('DOMContentLoaded', function() {
-#     const videos = document.querySelectorAll('video');
-#     videos.forEach(video => {
-#         video.addEventListener('play', function() {
-#             const currentTime = video.currentTime;
-#             videos.forEach(v => {
-#                 if (v != video) {
-#                     v.currentTime = currentTime;
-#                     v.play();
-#                 }
-#             });
-#         });
-#         video.addEventListener('pause', function() {
-#             videos.forEach(v => {
-#                 if (v != video) {
-#                     v.pause();
-#                 }
-#             });
-#         });
-#     });
-# });
-# """
-
-
-# with gr.Blocks(js=js) as demo:
 with gr.Blocks() as demo:
     gr.Markdown("# 医学影像分割")
     gr.Markdown("上传一个医学影像视频，查看分割结果和 Ground Truth。")
@@ -76,19 +49,19 @@ with gr.Blocks() as demo:
         with gr.Column():
             video_input = gr.Video(label="上传视频")
             submit_button = gr.Button("Submit")
-            gr.Markdown("上传视频")
+            gr.Markdown("### 上传视频")
 
         with gr.Column():
             video_output1 = gr.Video(label="预测结果")
-            gr.Markdown("预测结果")
+            gr.Markdown("### 预测结果")
             video_output2 = gr.Video(label="Ground Truth(通过文件名匹配)")
-            gr.Markdown("Ground Truth(通过文件名匹配)")
+            gr.Markdown("### Ground Truth(通过文件名匹配)")
 
         with gr.Column():
             video_output3 = gr.Video(label="经过预测结果masked后的原视频")
-            gr.Markdown("经过预测结果masked后的原视频")
+            gr.Markdown("### 经过预测结果masked后的原视频")
             video_output4 = gr.Video(label="经过Ground Truth masked后的原视频")
-            gr.Markdown("经过Ground Truth masked后的原视频")
+            gr.Markdown("### 经过Ground Truth masked后的原视频")
 
     submit_button.click(
         process_video,
