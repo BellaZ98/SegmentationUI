@@ -1,7 +1,9 @@
 import gradio as gr
 import numpy as np
 from utils import separate_video, join_video
+import time
 import os
+import random
 # from your_segmentation_model import segment_frame
 
 
@@ -23,14 +25,18 @@ def process_video(video_path):
     # # 将预测结果与原始帧合成视频
     # out_path = 'output_video.avi'
     # out = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*'DIVX'), 15, (frame.shape[1], frame.shape[0]))
+    # for frame in frames:
+    #     predictions.append(segment_frame(frame))
     #
     # for pred in predictions:
     # #     out.write(pred.astype('uint8'))  # 确保预测结果为正确的数据类型
     # out.release()
+
     # 加载预测视频
     out_path = find_file(video_path, 'data/0004_prediction/')
     # 加载 ground truth 视频
     gt_path = find_file(video_path, 'data/0004_gt/')
+    time.sleep(3 + random.random())  # 模拟模型处理时间
     return out_path, gt_path
 
 
