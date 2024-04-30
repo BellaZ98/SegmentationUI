@@ -40,6 +40,33 @@ def process_video(video_path):
     return out_path, gt_path
 
 
+# # JavaScript for syncing video play and pause
+# js = """
+# document.addEventListener('DOMContentLoaded', function() {
+#     const videos = document.querySelectorAll('video');
+#     videos.forEach(video => {
+#         video.addEventListener('play', function() {
+#             const currentTime = video.currentTime;
+#             videos.forEach(v => {
+#                 if (v != video) {
+#                     v.currentTime = currentTime;
+#                     v.play();
+#                 }
+#             });
+#         });
+#         video.addEventListener('pause', function() {
+#             videos.forEach(v => {
+#                 if (v != video) {
+#                     v.pause();
+#                 }
+#             });
+#         });
+#     });
+# });
+# """
+
+
+# with gr.Blocks(js=js) as demo:
 with gr.Blocks() as demo:
     gr.Markdown("# 医学影像分割")
     gr.Markdown("上传一个医学影像视频，查看分割结果和 Ground Truth。")
