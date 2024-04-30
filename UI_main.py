@@ -40,10 +40,23 @@ def process_video(video_path):
     return out_path, gt_path
 
 
-iface = gr.Interface(fn=process_video,
-                     inputs=gr.Video(label="上传视频"),
-                     outputs=[gr.Video(label="预测结果"), gr.Video(label="Ground Truth(通过文件名匹配)")],
-                     title="医学影像分割",
-                     description="上传一个医学影像视频，查看分割结果和 Ground Truth。")
+with gr.Blocks() as demo:
+    with gr.Row():
+        with gr.Column():
+            video_input = gr.Video(label="上传视频")
+            submit_button = gr.Button("Submit")
 
-iface.launch()
+        with gr.Column():
+            video_output1 = gr.Video(label="预测结果")
+
+        with gr.Column():
+            video_output2 = gr.Video(label="Ground Truth(通过文件名匹配)")
+
+    submit_button.click(
+        process_video,
+        inputs=video_input,
+        outputs=[video_output1, video_output2]
+    )
+
+
+demo.launch()
