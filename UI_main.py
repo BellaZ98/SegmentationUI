@@ -41,6 +41,8 @@ def process_video(video_path):
 
 
 with gr.Blocks() as demo:
+    gr.Markdown("# 医学影像分割")
+    gr.Markdown("上传一个医学影像视频，查看分割结果和 Ground Truth。")
     with gr.Row():
         with gr.Column():
             video_input = gr.Video(label="上传视频")
